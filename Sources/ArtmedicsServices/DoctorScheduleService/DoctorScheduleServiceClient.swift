@@ -1,0 +1,62 @@
+import Foundation
+import Fetchworking
+import Combine
+import ArtmedicsCore
+
+final class DoctorScheduleServiceClient: DoctorScheduleService {
+    let networkController: any Fetchworking
+    let host: any HostType
+
+    init(networkController: any Fetchworking = NetworkController(), host: any HostType) {
+        self.networkController = networkController
+        self.host = host
+
+        Endpoint.host = host.rawValue
+    }
+    
+    func create(_ doctorSchedule: DoctorSchedule) -> AnyPublisher<DoctorSchedule, Error> {
+        networkController.request(method: .post, endpoint: .create(doctorSchedule))
+    }
+
+    func getSchedulesByDate(_ date: Date) -> AnyPublisher<[DoctorSchedule], Error> {
+        networkController.request(method: .get, endpoint: .getByDate(date))
+    }
+
+    func getSchedulesByDoctor(_ doctorID: UUID) -> AnyPublisher<[DoctorSchedule], Error> {
+        networkController.request(method: .get, endpoint: .getByDoctor(doctorID))
+    }
+
+    func updateSchedule(_ schedule: DoctorSchedule) -> AnyPublisher<DoctorSchedule, Error> {
+        networkController.request(method: .put, endpoint: .update(schedule))
+    }
+
+    func deleteSchedule(_ scheduleID: UUID) -> AnyPublisher<Bool, Error> {
+        networkController.request(method: .delete, endpoint: .delete(scheduleID))
+    }
+}
+
+// MARK: - Endpoints
+
+private extension Endpoint {
+    static func create(_ doctorSchedule: DoctorSchedule) -> Self {
+        Endpoint(path: "/schedules", body: makeJSON(doctorSchedule))
+    }
+
+    static func getByDate(_ date: Date) -> Self {
+        let query = URLQueryItem(name: "date", value: "\(date.timeIntervalSince1970)")
+        
+        return Endpoint(path: "/schedules", queryItems: [query])
+    }
+
+    static func getByDoctor(_ doctoID: UUID) -> Self {
+        Endpoint(path: "/schedules\(doctoID.uuidString)")
+    }
+
+    static func update(_ schedule: DoctorSchedule) -> Self {
+        Endpoint(path: "/schedules\(schedule.id.uuidString)", body: makeJSON(schedule))
+    }
+
+    static func delete(_ scheduleID: UUID) -> Self {
+        Endpoint(path: "/schedules\(scheduleID.uuidString)")
+    }
+}
