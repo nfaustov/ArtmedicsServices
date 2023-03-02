@@ -4,7 +4,7 @@ protocol DependencyKey {
     static var currentValue: Value { get set }
 }
 
-struct ArtmedicsServices {
+public struct ArtmedicsServices {
     private static var current = ArtmedicsServices()
 
     static subscript<K: DependencyKey>(key: K.Type) -> K.Value {
@@ -26,7 +26,7 @@ public struct Dependency<T> {
         set { ArtmedicsServices[keyPath] = newValue }
     }
 
-    init(keyPath: WritableKeyPath<ArtmedicsServices, T>) {
+    public init(keyPath: WritableKeyPath<ArtmedicsServices, T>) {
         self.keyPath = keyPath
     }
 }
