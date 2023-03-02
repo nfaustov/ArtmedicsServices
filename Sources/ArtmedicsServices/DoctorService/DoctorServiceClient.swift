@@ -57,8 +57,8 @@ struct DoctorServiceKey: DependencyKey {
     static var currentValue: DoctorService = DoctorServiceClient()
 }
 
-extension ArtmedicsServices {
-    private var doctorService: DoctorService {
+public extension ArtmedicsServices {
+    var doctorService: DoctorService {
         get { Self[DoctorServiceKey.self] }
         set { Self[DoctorServiceKey.self] = newValue }
     }
