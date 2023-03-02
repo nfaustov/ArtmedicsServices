@@ -5,13 +5,9 @@ import ArtmedicsCore
 
 final class DoctorScheduleServiceClient: DoctorScheduleService {
     let networkController: any Fetchworking
-    let host: any HostType
 
-    init(networkController: any Fetchworking = NetworkController(), host: any HostType) {
+    init(networkController: any Fetchworking = NetworkController()) {
         self.networkController = networkController
-        self.host = host
-
-        Endpoint.host = host.rawValue
     }
     
     func create(_ doctorSchedule: DoctorSchedule) -> AnyPublisher<DoctorSchedule, Error> {
@@ -58,5 +54,18 @@ private extension Endpoint {
 
     static func delete(_ scheduleID: UUID) -> Self {
         Endpoint(path: "/schedules\(scheduleID.uuidString)")
+    }
+}
+
+// MARK: - DependencyKey
+
+struct DoctorScheduleServiceKey: DependencyKey {
+    static var currentValue: DoctorScheduleService = DoctorScheduleServiceClient()
+}
+
+extension ArtmedicsServices {
+    private var doctorScheduleService: DoctorScheduleService {
+        get { Self[DoctorScheduleServiceKey.self] }
+        set { Self[DoctorScheduleServiceKey.self] = newValue }
     }
 }

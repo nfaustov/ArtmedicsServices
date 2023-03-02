@@ -12,7 +12,7 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/nfaustov/Fetchworking.git", from: "0.9.0"),
+        .package(url: "https://github.com/nfaustov/Fetchworking.git", from: "1.0.0"),
         .package(url: "https://github.com/nfaustov/ArtmedicsCore.git", from: "0.11.1")
     ],
     targets: [

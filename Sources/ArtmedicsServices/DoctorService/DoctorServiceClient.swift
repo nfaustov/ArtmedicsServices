@@ -5,13 +5,9 @@ import Fetchworking
 
 final class DoctorServiceClient: DoctorService {
     let networkController: any Fetchworking
-    let host: any HostType
 
-    init(networkController: any Fetchworking = NetworkController(), host: any HostType) {
+    init(networkController: any Fetchworking = NetworkController()) {
         self.networkController = networkController
-        self.host = host
-
-        Endpoint.host = host.rawValue
     }
 
     func getDoctors() -> AnyPublisher<[Doctor], Error> {
@@ -52,5 +48,18 @@ private extension Endpoint {
 
     static func update(_ doctor: Doctor) -> Self {
         Endpoint(path: "/doctors/\(doctor.id.uuidString)", body: makeJSON(doctor))
+    }
+}
+
+// MARK: - DependencyKey
+
+struct DoctorServiceKey: DependencyKey {
+    static var currentValue: DoctorService = DoctorServiceClient()
+}
+
+extension ArtmedicsServices {
+    private var doctorService: DoctorService {
+        get { Self[DoctorServiceKey.self] }
+        set { Self[DoctorServiceKey.self] = newValue }
     }
 }

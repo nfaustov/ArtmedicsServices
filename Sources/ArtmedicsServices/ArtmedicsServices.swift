@@ -1,23 +1,32 @@
-import Fetchworking
+protocol DependencyKey {
+    associatedtype Value
 
-public protocol NetworkServiceContainer: ServiceContainer {
-    var doctorService: DoctorService { get }
+    static var currentValue: Value { get set }
 }
 
-public final class ArtmedicsServices: NetworkServiceContainer {
-    public let host: any HostType
+struct ArtmedicsServices {
+    private static var current = ArtmedicsServices()
 
-    public init(host: any HostType = Host.local) {
-        self.host = host
+    static subscript<K: DependencyKey>(key: K.Type) -> K.Value {
+        get { key.currentValue }
+        set { key.currentValue = newValue }
     }
 
-    public lazy var doctorService: DoctorService = DoctorServiceClient(host: host)
-    public lazy var doctorScheduleService: DoctorScheduleService = DoctorScheduleServiceClient(host: host)
+    static subscript<T>(_ keyPath: WritableKeyPath<ArtmedicsServices, T>) -> T {
+        get { current[keyPath: keyPath] }
+        set { current[keyPath: keyPath] = newValue }
+    }
 }
 
-public enum Host: String, HostType {
-    case local = "http://127.0.0.1:8080"
-    case test
-    case production = "https://artmedics.ru/api/v0"
-}
+@propertyWrapper
+public struct Dependency<T> {
+    private let keyPath: WritableKeyPath<ArtmedicsServices, T>
+    public var wrappedValue: T {
+        get { ArtmedicsServices[keyPath] }
+        set { ArtmedicsServices[keyPath] = newValue }
+    }
 
+    init(keyPath: WritableKeyPath<ArtmedicsServices, T>) {
+        self.keyPath = keyPath
+    }
+}
