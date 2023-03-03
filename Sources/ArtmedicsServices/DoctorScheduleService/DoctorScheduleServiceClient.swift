@@ -59,12 +59,12 @@ private extension Endpoint {
 
 // MARK: - DependencyKey
 
-struct DoctorScheduleServiceKey: DependencyKey {
+private struct DoctorScheduleServiceKey: DependencyKey {
     static var currentValue: DoctorScheduleService = DoctorScheduleServiceClient()
 }
 
-extension ArtmedicsServices {
-    private var doctorScheduleService: DoctorScheduleService {
+public extension ArtmedicsServices {
+    var doctorScheduleService: DoctorScheduleService {
         get { Self[DoctorScheduleServiceKey.self] }
         set { Self[DoctorScheduleServiceKey.self] = newValue }
     }
