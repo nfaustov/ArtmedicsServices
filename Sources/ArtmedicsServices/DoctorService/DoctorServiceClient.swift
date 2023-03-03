@@ -53,7 +53,7 @@ private extension Endpoint {
 
 // MARK: - DependencyKey
 
-struct DoctorServiceKey: DependencyKey {
+private struct DoctorServiceKey: DependencyKey {
     static var currentValue: DoctorService = DoctorServiceClient()
 }
 

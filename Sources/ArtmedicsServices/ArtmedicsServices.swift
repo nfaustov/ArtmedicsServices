@@ -26,7 +26,7 @@ public struct Dependency<T> {
         set { ArtmedicsServices[keyPath] = newValue }
     }
 
-    public init(keyPath: WritableKeyPath<ArtmedicsServices, T>) {
+    public init(_ keyPath: WritableKeyPath<ArtmedicsServices, T>) {
         self.keyPath = keyPath
     }
 }
