@@ -44,16 +44,16 @@ private extension Endpoint {
         return Endpoint(path: "/schedules", queryItems: [query])
     }
 
-    static func getByDoctor(_ doctoID: UUID) -> Self {
-        Endpoint(path: "/schedules\(doctoID.uuidString)")
+    static func getByDoctor(_ doctorID: UUID) -> Self {
+        Endpoint(path: "/schedules/\(doctorID.uuidString)")
     }
 
     static func update(_ schedule: DoctorSchedule) -> Self {
-        Endpoint(path: "/schedules\(schedule.id.uuidString)", body: makeJSON(schedule))
+        Endpoint(path: "/schedules/\(schedule.id.uuidString)", body: makeJSON(schedule))
     }
 
     static func delete(_ scheduleID: UUID) -> Self {
-        Endpoint(path: "/schedules\(scheduleID.uuidString)")
+        Endpoint(path: "/schedules/\(scheduleID.uuidString)")
     }
 }
 

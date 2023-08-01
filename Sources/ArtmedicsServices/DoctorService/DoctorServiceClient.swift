@@ -23,7 +23,7 @@ final class DoctorServiceClient: DoctorService {
     }
 
     func updateDoctor(_ doctor: Doctor) -> AnyPublisher<Doctor, Error> {
-        networkController.request(method: .put, endpoint: .create(doctor))
+        networkController.request(method: .put, endpoint: .update(doctor))
     }
 
     func deleteDoctor(id: UUID) -> AnyPublisher<[Doctor], Error> {
