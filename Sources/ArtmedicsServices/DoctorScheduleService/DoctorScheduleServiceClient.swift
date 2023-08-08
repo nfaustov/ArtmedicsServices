@@ -10,7 +10,7 @@ final class DoctorScheduleServiceClient: DoctorScheduleService {
         self.networkController = networkController
     }
     
-    func create(_ doctorSchedule: DoctorSchedule) -> AnyPublisher<Bool, Error> {
+    func create(_ doctorSchedule: DoctorSchedule) -> AnyPublisher<DoctorSchedule, Error> {
         networkController.request(method: .post, endpoint: .create(doctorSchedule))
     }
 

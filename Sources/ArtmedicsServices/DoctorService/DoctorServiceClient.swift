@@ -14,7 +14,7 @@ final class DoctorServiceClient: DoctorService {
         networkController.request(method: .get, endpoint: .doctors)
     }
 
-    func createDoctor(_ doctor: Doctor) -> AnyPublisher<Bool, Error> {
+    func createDoctor(_ doctor: Doctor) -> AnyPublisher<Doctor, Error> {
         networkController.request(method: .post, endpoint: .create(doctor))
     }
 
@@ -55,7 +55,7 @@ private extension Endpoint {
     }
 
     static func uploadPhoto(_ imageData: Data, for doctor: Doctor) -> Self {
-        Endpoint(path: "/doctors/\(doctor.id.uuidString)", body: makeJSON(imageData))
+        Endpoint(path: "/doctors/\(doctor.id.uuidString)/photo_upload", body: makeJSON(imageData))
     }
 }
 
