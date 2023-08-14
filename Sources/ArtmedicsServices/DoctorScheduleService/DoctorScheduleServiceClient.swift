@@ -39,9 +39,7 @@ private extension Endpoint {
     }
 
     static func getByDate(_ date: Date) -> Self {
-        let formatter = DateFormatter()
-        formatter.timeZone = TimeZone(secondsFromGMT: 10_800)
-        let query = URLQueryItem(name: "date", value: "\(formatter.string(from: date))")
+        let query = URLQueryItem(name: "date", value: "\(date.timeIntervalSince1970)")
         
         return Endpoint(path: "/schedules", queryItems: [query])
     }
